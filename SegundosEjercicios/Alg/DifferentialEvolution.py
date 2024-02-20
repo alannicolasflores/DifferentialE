@@ -100,10 +100,7 @@ class DifferentialEvolution(OptimizationAlgorithm):
         # Evaluar la aptitud inicial de la población
         for i, individual in enumerate(population):
             _, objective_values[i], violations[i] = self.deb.evaluate_individual(individual)
-        
-        print(population)
-        print(objective_values)
-        print(violations)
+  
         # Iterar para cada generación
         for G in range(self.max_generations):
             for i in range(self.population_size):
@@ -123,7 +120,7 @@ class DifferentialEvolution(OptimizationAlgorithm):
                     population[i] = trial_vector
                     objective_values[i] = better_result
                     violations[i] = better_violation
-
+        print(objective_values)
         # Encontrar los índices de las soluciones sin violaciones.
         no_violation_index = np.where(violations == 0)[0]
 
@@ -138,13 +135,17 @@ class DifferentialEvolution(OptimizationAlgorithm):
             best_solution = population[best_no_violation_index]
             best_fitness = objective_values[best_no_violation_index]
             best_violation = violations[best_no_violation_index]
+            
         else:
             # Si no hay soluciones sin violaciones, podrías manejar esto de diferentes maneras.
             # Una opción es simplemente seleccionar la solución con el menor número de violaciones,
             # o podrías decidir manejar este caso de una manera específica relevante para tu problema.
             print("No se encontraron soluciones sin violaciones.")
             # Aquí podrías retornar None o alguna solución por defecto, dependiendo de tus necesidades.
+            
+            
             return None, None, None
+
         
         return best_solution, best_fitness, best_violation
 

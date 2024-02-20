@@ -5,7 +5,7 @@ class deb_rules:
         
     def evaluate_constraints(self, solution):
         # Obtener las restricciones desde el modelo
-        conditions, function , inequality_constants, inequality_operators = self.mathematical_model.get_constraints(solution)
+        conditions, function , _ , _ = self.mathematical_model.get_constraints(solution)
 
         # Lista para almacenar los resultados de las condiciones (True si se cumple, False si no)
         condition_results = [cond(solution) for cond in conditions]
@@ -22,21 +22,11 @@ class deb_rules:
             if not condition_result:  # Si la condición no se cumple (False)
                 # Suponemos que necesitamos calcular la diferencia entre el valor actual y el valor límite
                 # La manera específica de calcular esta violación dependerá de tu modelo y condiciones
-                
-                violation = self.calculate_violation( function[idx],  inequality_constants[idx], inequality_operators[idx])
+                violation = function[idx]
                 total_violations += violation
-
         return total_violations
 
-    def calculate_violation(self,  function , constant, operator):
-        
-        if(operator == "<="):
-            return function - constant
-        if(operator == ">="):
-            return constant - function
-        else:
-            return 0  # Retorna el cálculo de la violación aquí
-    
+   
     def is_feasible(self, solution):
         return self.evaluate_constraints(solution) <= self.epsilon
     

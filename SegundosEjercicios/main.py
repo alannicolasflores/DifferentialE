@@ -6,8 +6,9 @@ from Alg.DifferentialEvolution import DifferentialEvolution
 alkylation_model = AlkylationModel()
 
 
-diferential_evolution = DifferentialEvolution(alkylation_model, 150 , 0.9, 0.8, 5, None, epsilon=0.0001)
-
+diferential_evolution = DifferentialEvolution(alkylation_model, 100 , 0.4, 0.8, 200, None, epsilon=0.01)
+#F(04-09)
+#[0.1-1] 
 
 best_solution, best_fitness, best_violation = diferential_evolution.optimize()
 

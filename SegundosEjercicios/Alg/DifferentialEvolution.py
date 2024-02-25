@@ -1,5 +1,4 @@
 import numpy as np
-
 from .OptimizationAlgorithm import OptimizationAlgorithm
 from .deb_rules import deb_rules
 
@@ -35,59 +34,37 @@ class DifferentialEvolution(OptimizationAlgorithm):
         # Número de variables de decisión
         num_variables = self.mathematical_model.get_variables()
         
-        # Seleccionar tres índices aleatorios distintos de target_idx
-        candidates = [idx for idx in range(self.population_size) if idx != target_idx]
-        rand1, rand2, rand3 = np.random.choice(candidates, 3, replace=False)
-        
-        # Crear el vector mutante
-        mutant_vector = population[rand1] + self.F * (population[rand2] - population[rand3])
-        
-        # Recombinación para crear el vector de prueba
-        trial_vector = np.array([mutant_vector[j] 
-                                 if np.random.rand() < self.CR or j == np.random.randint(0, num_variables) 
-                                else population[target_idx, j] for j in range(num_variables)])
+        # Inicializar el vector de prueba con el individuo objetivo actual
+        trial_vector = np.copy(population[target_idx])
         
         # Obtener los límites de cada variable
         bounds = self.mathematical_model.get_bounds()
         variable_names = self.mathematical_model.get_variable_names()
-    
-        # Ajustar las variables fuera de los límites
-        for i, name in enumerate(variable_names):
-            lower_bound, upper_bound = bounds[name]
-            if trial_vector[i] < lower_bound:
-                trial_vector[i] = lower_bound + (lower_bound - trial_vector[i])  # Reflejar sobre el límite inferior
-            elif trial_vector[i] > upper_bound:
-                trial_vector[i] = upper_bound - (trial_vector[i] - upper_bound)  # Reflejar sobre el límite superior
+
+        # Para cada variable en el individuo
+        for j in range(num_variables):
+            # Verificar si se realiza la mutación basada en el ratio de recombinación
+            if np.random.rand() < self.CR or j == np.random.randint(0, num_variables):
+                # Seleccionar tres índices aleatorios distintos de target_idx y de entre sí
+                candidates = [idx for idx in range(self.population_size) if idx != target_idx]
+                rand1, rand2, rand3 = np.random.choice(candidates, 3, replace=False)
+                
+                # Crear el componente mutante para la variable j
+                mutant_component = population[rand1, j] + self.F * (population[rand2, j] - population[rand3, j])
+
+                # Ajustar el componente mutante si está fuera de los límites
+                lower_bound, upper_bound = bounds[variable_names[j]]
+                if mutant_component < lower_bound:
+                    mutant_component = lower_bound + (lower_bound - mutant_component)
+                elif mutant_component > upper_bound:
+                    mutant_component = upper_bound - (mutant_component - upper_bound)
+
+                # Asignar el componente mutante al vector de prueba
+                trial_vector[j] = mutant_component
+            # Si no hay mutación, el componente permanece igual (ya está en trial_vector)
         
         return trial_vector
 
-    
-
-        
-
-    def _get_bounds_arrays(self):
-        # Obtener los límites de cada variable como arreglos separados
-        bounds = self.mathematical_model.get_bounds()
-        lower_bounds = np.array([bound[0] for bound in bounds.values()])
-        upper_bounds = np.array([bound[1] for bound in bounds.values()])
-        return lower_bounds, upper_bounds
-    
-    def _select_best_solution(self, population):
-        # Inicializa la mejor solución y el mejor valor de la función objetivo
-        best_solution = population[0]
-        best_fitness = self.mathematical_model.get_objective_function(best_solution)
-
-        # Itera a través de la población para encontrar la mejor solución
-        for individual in population:
-            fitness = self.mathematical_model.get_objective_function(individual)
-            if fitness < best_fitness:
-                best_solution = individual
-                best_fitness = fitness
-
-        return best_solution
-    
-    
-    
     def optimize(self):
         # Inicializar población
         population = self._initialize_population()
@@ -95,23 +72,24 @@ class DifferentialEvolution(OptimizationAlgorithm):
         objective_values = np.zeros(self.population_size)
         violations = np.zeros(self.population_size)
         # La población ya está definida
-
+        print(population)
         
         # Evaluar la aptitud inicial de la población
         for i, individual in enumerate(population):
             _, objective_values[i], violations[i] = self.deb.evaluate_individual(individual)
-  
+        
+        
         # Iterar para cada generación
         for G in range(self.max_generations):
             for i in range(self.population_size):
                 # Mutar y recombinar para crear el vector de prueba
                 trial_vector = self._mutate_and_recombine(population, i)
-
+          
                 # Comparar directamente el individuo actual con el vector de prueba utilizando las DebRules
                 # Asumiendo que 'DebRules.compare' ahora se encarga de evaluar ambos internamente
                 # y decide cuál de los dos (individuo actual vs. vector de prueba) es mejor
-# Supongamos que 'compare' retorna el mejor individuo, su resultado (valor de función objetivo),
-# y sus violaciones de restricciones
+                # Supongamos que 'compare' retorna el mejor individuo, su resultado (valor de función objetivo),
+                # y sus violaciones de restricciones
                 better_individual, better_result, better_violation = self.deb.compare(population[i], trial_vector)
                 
                 # Actualizar la población y los registros correspondientes si el vector de prueba es mejor
@@ -120,10 +98,11 @@ class DifferentialEvolution(OptimizationAlgorithm):
                     population[i] = trial_vector
                     objective_values[i] = better_result
                     violations[i] = better_violation
-        print(objective_values)
+
         # Encontrar los índices de las soluciones sin violaciones.
         no_violation_index = np.where(violations == 0)[0]
-
+        print(population)
+       
         if len(no_violation_index) > 0:
             # Si hay al menos una solución sin violaciones, selecciona la de mejor fitness entre ellas.
             # Extrae los valores de la función objetivo de las soluciones sin violaciones.

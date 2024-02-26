@@ -54,11 +54,12 @@ class DifferentialEvolution(OptimizationAlgorithm):
 
                 # Ajustar el componente mutante si está fuera de los límites
                 lower_bound, upper_bound = bounds[variable_names[j]]
-                if mutant_component < lower_bound:
-                    mutant_component = lower_bound + (lower_bound - mutant_component)
-                elif mutant_component > upper_bound:
-                    mutant_component = upper_bound - (mutant_component - upper_bound)
-
+                while mutant_component < lower_bound or mutant_component > upper_bound:
+                                if mutant_component < lower_bound:
+                                    mutant_component = 2 * lower_bound - mutant_component
+                                elif mutant_component > upper_bound:
+                                    mutant_component = 2 * upper_bound - mutant_component
+                            
                 # Asignar el componente mutante al vector de prueba
                 trial_vector[j] = mutant_component
             # Si no hay mutación, el componente permanece igual (ya está en trial_vector)

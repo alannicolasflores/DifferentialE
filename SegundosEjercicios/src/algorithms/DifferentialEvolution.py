@@ -87,7 +87,7 @@ class DifferentialEvolution(OptimizationAlgorithm):
         objective_values = np.zeros(self.population_size)
         violations = np.zeros(self.population_size)
         # La población ya está definida
-        print(population)
+        
         
         # Abrir un archivo CSV para escribir los resultados
         with open('optimization_results.csv', mode='w', newline='') as file:
@@ -110,7 +110,7 @@ class DifferentialEvolution(OptimizationAlgorithm):
                     
                     # Registrar comparación en el archivo CSV
                     writer.writerow([G, i, better_result, better_violation, 'Comparacion'])
-                    print("Comparación. Individuo: ", i, "Generación: ", G, "Resultado: ", better_result, "Violaciones: ", better_violation)
+                 
                     
                     # Actualizar la población si el vector de prueba es mejor
                     if np.array_equal(better_individual, trial_vector):
@@ -119,13 +119,11 @@ class DifferentialEvolution(OptimizationAlgorithm):
                         violations[i] = better_violation
                         # Registrar actualización en el archivo CSV
                         writer.writerow([G, i, objective_values[i], violations[i], 'Actualizacion'])
-                        print("Actualización. Individuo: ", i, "Generación: ", G, "Resultado: ", objective_values[i], "Violaciones: ", violations[i])
+                       
 
         # Encontrar los índices de las soluciones sin violaciones.
         no_violation_index = [index for index, value in enumerate(violations) if value == 0]
 
-        print(no_violation_index)
-        print(violations)
        
         if len(no_violation_index) > 0:
             # Si hay al menos una solución sin violaciones, selecciona la de mejor fitness entre ellas.

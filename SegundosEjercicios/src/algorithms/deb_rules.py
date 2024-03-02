@@ -14,6 +14,8 @@ class deb_rules:
 
         for idx, cond in enumerate(conditions):
             condition_result = cond(solution)  # Evalúa cada condición para la solución dada.
+            print(condition_result)
+            print(function[idx])
             operator = inequality_operators[idx]  # Obtiene el operador correspondiente a la condición actual.
 
             if not condition_result:

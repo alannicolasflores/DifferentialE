@@ -6,7 +6,7 @@ from src.algorithms.DifferentialEvolution import DifferentialEvolution
 alkylation_model = AlkylationModel()
 
 
-diferential_evolution = DifferentialEvolution(alkylation_model, 150 , 0.5, 0.7, 200, None, epsilon=0.01)
+diferential_evolution = DifferentialEvolution(alkylation_model, 50 , 0.5, 0.7, 50, None, epsilon=0.01)
 #F(04-09)
 #[0.1-1] 
 

@@ -38,20 +38,20 @@ class AlkylationModel(MathematicalModel):
 
         # Lista de expresiones de función para evaluarla y saber el valor del resultado
         conditions = [
-            lambda x: c[7] * x['x6']**2 + c[8] * x['x1']**-1 * x['x3'] - c[9] * x['x6'] - 1<=0,
-            lambda x: c[10] * x['x1'] * x['x3']**-1 + c[11] * x['x1'] * x['x6'] + x['x3']**-1 - c[12] * x['x1'] * x['x3']**-1 + x['x6']**2  - 1<=0,
-            lambda x: c[13] * x['x6']**2 + c[14] * x['x5'] - c[15] * x['x4'] - c[16] * x['x6']  - 1<=0,
-            lambda x: c[17] * x['x5']**-1 + c[18] * x['x5']**-1 * x['x6'] + c[19] * x['x4'] * x['x5']**-1 - c[20] * x['x5']**-1 * x['x6']**2  - 1<=0,
-            lambda x: c[21] * x['x7'] + c[22] * x['x2'] * x['x3']**-1 * x['x4']**-1 - c[23] * x['x1'] * x['x3']**-1  - 1<=0,
-            lambda x: c[24] * x['x7']**-1 + c[25] * x['x2'] * x['x3']**-1 * x['x7']**-1 - c[26] * x['x2'] * x['x3']**-1 * x['x4']**-1 * x['x7']**-1 - 1<=0,
-            lambda x: c[27] * x['x5']**-1 + c[28] * x['x5']**-1 * x['x7'] - 1<=0,
-            lambda x: c[29] * x['x5'] - c[30] * x['x7'] - 1<=0,
-            lambda x: c[31] * x['x3'] - c[32] * x['x1'] - 1<=0,
-            lambda x: c[33] * x['x1'] * x['x3']**-1 + c[34] * x['x3']**-1  - 1<=0,
-            lambda x: c[35] * x['x2'] * x['x3']**-1 * x['x4']**-1 - c[36] * x['x2'] * x['x3']**-1 - 1<=0,
-            lambda x: c[37] * x['x4'] + c[38] * x['x2']**-1 * x['x3'] * x['x4'] - 1<=0,
-            lambda x: c[39] * x['x1'] * x['x6'] + c[40] * x['x1'] - c[41] * x['x3'] - 1<=0,
-            lambda x: c[42] * x['x1']**-1 * x['x3'] + c[43] * x['x1']**-1 - c[44] * x['x6'] - 1<=0
+            lambda x: c[7] * x['x6']**2 + c[8] * x['x1']**-1 * x['x3'] - c[9] * x['x6'] - 1 >=0,
+            lambda x: c[10] * x['x1'] * x['x3']**-1 + c[11] * x['x1'] * x['x6'] + x['x3']**-1 - c[12] * x['x1'] * x['x3']**-1 + x['x6']**2  - 1>=0,
+            lambda x: c[13] * x['x6']**2 + c[14] * x['x5'] - c[15] * x['x4'] - c[16] * x['x6']  - 1>=0,
+            lambda x: c[17] * x['x5']**-1 + c[18] * x['x5']**-1 * x['x6'] + c[19] * x['x4'] * x['x5']**-1 - c[20] * x['x5']**-1 * x['x6']**2  - 1>=0,
+            lambda x: c[21] * x['x7'] + c[22] * x['x2'] * x['x3']**-1 * x['x4']**-1 - c[23] * x['x2'] * x['x3']**-1  - 1>=0,
+            lambda x: c[24] * x['x7']**-1 + c[25] * x['x2'] * x['x3']**-1 * x['x7']**-1 - c[26] * x['x2'] * x['x3']**-1 * x['x4']**-1 * x['x7']**-1 - 1>=0,
+            lambda x: c[27] * x['x5']**-1 + c[28] * x['x5']**-1 * x['x7'] - 1>=0,
+            lambda x: c[29] * x['x5'] - c[30] * x['x7'] - 1>=0,
+            lambda x: c[31] * x['x3'] - c[32] * x['x1'] - 1>=0,
+            lambda x: c[33] * x['x1'] * x['x3']**-1 + c[34] * x['x3']**-1  - 1>=0,
+            lambda x: c[35] * x['x2'] * x['x3']**-1 * x['x4']**-1 - c[36] * x['x2'] * x['x3']**-1 - 1>=0,
+            lambda x: c[37] * x['x4'] + c[38] * x['x2']**-1 * x['x3'] * x['x4'] - 1>=0,
+            lambda x: c[39] * x['x1'] * x['x6'] + c[40] * x['x1'] - c[41] * x['x3'] - 1>=0,
+            lambda x: c[42] * x['x1']**-1 * x['x3'] + c[43] * x['x1']**-1 - c[44] * x['x6'] - 1>=0
         ]
 
         # Lista de expresiones de condición para evaluar en booleano
@@ -72,23 +72,23 @@ class AlkylationModel(MathematicalModel):
             c[42] * x['x1']**-1 * x['x3'] + c[43] * x['x1']**-1 - c[44] * x['x6'] - 1
         ]
 
-        # Lista de constantes de las desigualdades
+        # Lista de constantes de las desigualdades      
 
         inequality_operators = [
-            "<=",
-            "<=",
-            "<=",
-            "<=",
-            "<=",
-            "<=",
-            "<=",
-            "<=",
-            "<=",
-            "<=",
-            "<=",
-            "<=",
-            "<=",
-            "<="
+            ">=",
+            ">=",
+            ">=",
+            ">=",
+            ">=",
+            ">=",
+            ">=",
+            ">=",
+            ">=",
+            ">=",
+            ">=",
+            ">=",
+            ">=",
+            ">="
         ]
 
         return  conditions, function, inequality_operators
@@ -101,11 +101,11 @@ class AlkylationModel(MathematicalModel):
          1: 1.715,
          2: 0.035,
          3: 4.0565,
-         4: 10.0,
+         4: 10.000,
          5: 3000.0,
          6: 0.063,
          7: 0.59553571E-2,
-         8: 0.88392857E-1,
+         8: 0.88392857,
          9: 0.11756250,
          10: 1.10880000,
          11: 0.13035330,
@@ -123,7 +123,7 @@ class AlkylationModel(MathematicalModel):
          23: 0.25125634E+2,
          24: 0.16118996E+3,
          25: 5000.0,
-         26: 0.489551000E+6,
+         26: 0.48951000E+6,
          27: 0.44333333E+2,
          28: 0.33000000,
          29: 0.02255600,
@@ -134,7 +134,7 @@ class AlkylationModel(MathematicalModel):
          34: 0.81967200,
          35: 24500.0,
          36: 250.0,
-         37: 0.10220482E-1,
+         37: 0.10204082E-1,
          38: 0.12244898E-4,
          39: 0.00006250,
          40: 0.00006250,

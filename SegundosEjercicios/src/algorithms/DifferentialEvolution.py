@@ -56,28 +56,22 @@ class DifferentialEvolution(OptimizationAlgorithm):
         bounds = self.mathematical_model.get_bounds()
         variable_names = self.mathematical_model.get_variable_names()
 
-        # Abrir archivo CSV para escribir los resultados de la mutación
-        with open('mutation_results.csv', mode='a', newline='') as file:
-            writer = csv.writer(file)
             # Para cada variable en el individuo
-            for j in range(num_variables):
-                if np.random.rand(0,1) < self.CR or j == np.random.randint(0, num_variables): #revisar que se haga de 0 a 1
-                    candidates = [idx for idx in range(self.population_size) if idx != target_idx]
-                    rand1, rand2, rand3 = np.random.choice(candidates, 3, replace=False)
+        for j in range(num_variables):
+            if np.random.rand(0,1) < self.CR or j == np.random.randint(0, num_variables): #revisar que se haga de 0 a 1
+                candidates = [idx for idx in range(self.population_size) if idx != target_idx]
+                rand1, rand2, rand3 = np.random.choice(candidates, 3, replace=False)
                     
                     # Crear el componente mutante para la variable j
-                    mutant_component = population[rand1, j] + self.F * (population[rand2, j] - population[rand3, j])
-                    # Registrar el componente antes del ajuste
-                    writer.writerow([generation, target_idx, j, mutant_component, 'Antes del ajuste'])
+                mutant_component = population[rand1, j] + self.F * (population[rand2, j] - population[rand3, j])
                     
                     # Ajustar el componente mutante si está fuera de los límites
-                    lower_bound, upper_bound = bounds[variable_names[j]]
-                    adjusted_mutant_component = self.adjust_mutant_component(mutant_component, lower_bound, upper_bound)
+                lower_bound, upper_bound = bounds[variable_names[j]]
+                adjusted_mutant_component = self.adjust_mutant_component(mutant_component, lower_bound, upper_bound)
                     # Registrar el componente después del ajuste
-                    writer.writerow([generation, target_idx, j, adjusted_mutant_component, 'Después del ajuste'])
                     
                     # Asignar el componente mutante al vector de prueba
-                    trial_vector[j] = adjusted_mutant_component
+                trial_vector[j] = adjusted_mutant_component
         
         return trial_vector
 
@@ -93,14 +87,10 @@ class DifferentialEvolution(OptimizationAlgorithm):
         # La población ya está definida
         
         # Abrir un archivo CSV para escribir los resultados
-        with open('optimization_results.csv', mode='w', newline='') as file:
-            writer = csv.writer(file)
-            # Escribir los nombres de las columnas
-            writer.writerow(['Generacion', 'Indice Individuo', 'Resultado', 'Violaciones', 'Tipo'])
-
+       
             # Evaluar la aptitud inicial de la población
-            for i, individual in enumerate(population):
-                _, objective_values[i], violations[i] = self.deb.evaluate_individual(individual)
+        for i, individual in enumerate(population):
+            _, objective_values[i], violations[i] = self.deb.evaluate_individual(individual)
                 
             # Iterar para cada generación
             for G in range(self.max_generations):
@@ -110,9 +100,6 @@ class DifferentialEvolution(OptimizationAlgorithm):
                     # Comparar directamente el individuo actual con el vector de prueba
                     better_individual, better_result, better_violation = self.deb.compare(population[i], trial_vector)
                     
-                    # Registrar comparación en el archivo CSV
-                    writer.writerow([G, i, better_result, better_violation, 'Comparacion'])
-                 
                     
                     # Actualizar la población si el vector de prueba es mejor
                     if np.array_equal(better_individual, trial_vector):
@@ -120,8 +107,7 @@ class DifferentialEvolution(OptimizationAlgorithm):
                         objective_values[i] = better_result
                         violations[i] = better_violation
                         # Registrar actualización en el archivo CSV
-                        writer.writerow([G, i, objective_values[i], violations[i], 'Actualizacion'])
-                       
+   
 
         # Encontrar los índices de las soluciones sin violaciones.
         no_violation_index = [index for index, value in enumerate(violations) if value == 0]

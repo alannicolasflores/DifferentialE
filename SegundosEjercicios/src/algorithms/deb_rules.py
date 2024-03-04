@@ -14,8 +14,7 @@ class deb_rules:
 
         for idx, cond in enumerate(conditions):
             condition_result = cond(solution)  # Evalúa cada condición para la solución dada.
-            print(condition_result)
-            print(function[idx])
+            
             operator = inequality_operators[idx]  # Obtiene el operador correspondiente a la condición actual.
 
             if not condition_result:
@@ -31,7 +30,7 @@ class deb_rules:
                     total_violations += abs(function[idx])  # Suma la violación de desigualdad.
                     all_feasible = False  # Marca como no factible si hay violación.
         if all_feasible == True:
-            print("Factible")
+            pass    #print("Factible")
             
         return total_violations, all_feasible
 
@@ -66,13 +65,16 @@ class deb_rules:
 
 
         if feasible_a and feasible_b: # Si ambos individuos son factibles, compara sus valores de función objetivo.
+           
             if objective_a < objective_b: 
                 return individual_a, objective_a, violations_a
             else:
                 return individual_b, objective_b, violations_b
         elif feasible_a: # Si solo el individuo A es factible, lo devuelve.
+            
             return individual_a, objective_a, violations_a
         elif feasible_b: # Si solo el individuo B es factible, lo devuelve.
+            
             return individual_b, objective_b, violations_b
         else:
             if violations_a < violations_b: # Si ambos individuos son infactibles, compara sus violaciones.

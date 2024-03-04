@@ -35,9 +35,13 @@ class DifferentialEvolution(OptimizationAlgorithm):
     def adjust_mutant_component(mutant_component, lower_bound, upper_bound):
         while mutant_component < lower_bound or mutant_component > upper_bound:
             if mutant_component < lower_bound:
+                #print("Lowermutant_component", mutant_component, "lower_bound", lower_bound, "upper_bound", upper_bound)
                 mutant_component = 2 * lower_bound - mutant_component
+                #print("LowerBefore: mutant_component", mutant_component, "lower_bound", lower_bound, "upper_bound", upper_bound)
             elif mutant_component > upper_bound:
+               # print("Uppermutant_component", mutant_component, "lower_bound", lower_bound, "upper_bound", upper_bound)
                 mutant_component = 2 * upper_bound - mutant_component
+               # print("UpperBefore: mutant_component", mutant_component, "lower_bound", lower_bound, "upper_bound", upper_bound)
         return mutant_component
 
  
@@ -57,7 +61,7 @@ class DifferentialEvolution(OptimizationAlgorithm):
             writer = csv.writer(file)
             # Para cada variable en el individuo
             for j in range(num_variables):
-                if np.random.rand() < self.CR or j == np.random.randint(0, num_variables):
+                if np.random.rand(0,1) < self.CR or j == np.random.randint(0, num_variables): #revisar que se haga de 0 a 1
                     candidates = [idx for idx in range(self.population_size) if idx != target_idx]
                     rand1, rand2, rand3 = np.random.choice(candidates, 3, replace=False)
                     
@@ -88,7 +92,6 @@ class DifferentialEvolution(OptimizationAlgorithm):
         violations = np.zeros(self.population_size)
         # La población ya está definida
         
-        
         # Abrir un archivo CSV para escribir los resultados
         with open('optimization_results.csv', mode='w', newline='') as file:
             writer = csv.writer(file)
@@ -104,7 +107,6 @@ class DifferentialEvolution(OptimizationAlgorithm):
                 for i in range(self.population_size):
                     # Mutar y recombinar para crear el vector de prueba
                     trial_vector = self._mutate_and_recombine(population, i, G)
-                    _, trial_vector_objective, trial_vector_violations = self.deb.evaluate_individual(trial_vector)
                     # Comparar directamente el individuo actual con el vector de prueba
                     better_individual, better_result, better_violation = self.deb.compare(population[i], trial_vector)
                     
@@ -144,7 +146,7 @@ class DifferentialEvolution(OptimizationAlgorithm):
             print("No se encontraron soluciones sin violaciones.")
             # Aquí podrías retornar None o alguna solución por defecto, dependiendo de tus necesidades.
             
-            
+            print(min(violations))
             return None, None, None
 
         

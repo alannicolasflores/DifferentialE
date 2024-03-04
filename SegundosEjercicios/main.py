@@ -17,7 +17,7 @@ F_values = [0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 CR_values = [0.11, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.999]
 # Inicializa el modelo de alquilación
 alkylation_model = AlkylationModel()
-for _ in range(10): 
+for _ in range(5): 
     for F in F_values:
         for CR in CR_values:
             differential_evolution = DifferentialEvolution(alkylation_model, 70, F, CR, 200, None, epsilon=0.01)

@@ -13,11 +13,11 @@ with open(csv_filename, mode='a', newline='') as file:
     if file.tell() == 0:  # Si estamos al principio, el archivo está vacío
         writer.writerow(['F', 'CR', 'Mejor Solución', 'Mejor Fitness', 'Violaciones'])
 
-F_values = [0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+F_values = [ 0.8, 0.9]
 CR_values = [0.11, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.999]
 # Inicializa el modelo de alquilación
 alkylation_model = AlkylationModel()
-for _ in range(5): 
+for _ in range(1): 
     for F in F_values:
         for CR in CR_values:
             differential_evolution = DifferentialEvolution(alkylation_model, 70, F, CR, 200, None, epsilon=0.01)
